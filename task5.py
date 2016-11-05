@@ -47,3 +47,5 @@ while(not stop):
 
     if len(q1_route)*len(q2_route) == 0:
         stop = True
+
+print(0)
