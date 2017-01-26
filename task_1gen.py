@@ -4,7 +4,10 @@ import argparse
 import random
 import math
 import copy
+import sys
 
+DEFAULT_BASE = 5
+DEFAULT_EXT = 25
 DEFAULT_WIDTH = 512
 DEFAULT_HEIGHT = 512
 DEFAULT_SEED = 1
@@ -52,6 +55,14 @@ def init(args):
 def output(list):
     for element in list:
         print("%d %d" % (element.x, element.y))
+
+def stdin_master(args):
+    raw_data = [
+        [ int(value)
+            for value in value.strip().split(' ')
+        ] for value in sys.stdin.readlines()
+    ][1:]
+    return [Point(x,y) for x,y in raw_data]
 
 def gen_master(args):
     master = []
@@ -101,8 +112,13 @@ def main(args):
 #init
     init(args)
 
+#master pattern
+    if args.input == 'stdin':
+#get from stdin
+        master = stdin_master(args)
+    else:
 #generate master
-    master = gen_master(args)
+        master = gen_master(args)
 
 #randomize master
     master_randomized = randomize_master(args, master)
@@ -143,12 +159,12 @@ if __name__ == "__main__":
                         help='master pattern field height (%d)' % DEFAULT_HEIGHT)
     parser.add_argument('--base', type=int,
                         nargs='?',
-                        required=True,
-                        help='master pattern points count')
+                        default=DEFAULT_BASE,
+                        help='master pattern points count (%d)' % DEFAULT_BASE)
     parser.add_argument('--ext', type=int,
                         nargs='?',
-                        required=True,
-                        help='recognized points count')
+                        default=DEFAULT_EXT,
+                        help='recognized points count (%d)' % DEFAULT_EXT)
     parser.add_argument('--seed', type=int,
                         nargs='?',
                         default=DEFAULT_SEED,
@@ -157,6 +173,11 @@ if __name__ == "__main__":
                         nargs='?',
                         default=DEFAULT_DELTA,
                         help='master pattern randomize delta (%d)' % DEFAULT_DELTA)
+    parser.add_argument('--input', nargs='?',
+                        default='none',
+                        choices=['stdin',
+                                 'none'],
+                        help='get master pattern from stdin (none)')
     parser.add_argument('--output', nargs='?',
                         default=DEFAULT_OUTPUT,
                         choices=['all',
@@ -165,6 +186,7 @@ if __name__ == "__main__":
                                  'recognized-pattern',
                                  'none'],
                         help='output type (%s)' % DEFAULT_OUTPUT)
+
 #parse arguments
     args = parser.parse_args()
     main(args)
