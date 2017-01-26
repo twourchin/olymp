@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# using example:
+# cat task_1a_symbol.in | ./task_1gen.py --width 20 --height 20 --ext 100 --input stdin --seed 2 --delta 5| ./task_1show.py
 import argparse
 import random
 import math
@@ -12,7 +14,7 @@ DEFAULT_WIDTH = 512
 DEFAULT_HEIGHT = 512
 DEFAULT_SEED = 1
 DEFAULT_OUTPUT = 'all'
-DEFAULT_DELTA = 1
+DEFAULT_DELTA = 2
 
 class Point(object):
     __slots__ = ['x', 'y']
