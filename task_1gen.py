@@ -80,8 +80,7 @@ def gen_recognized(args, transform_key, master):
     alfaRad, k, cX, cY = transform_key
     recognized = copy.deepcopy(master)
     while len(recognized)<args.ext:
-        point = Point.random(args.width * 5, args.height * 5)
-        point.transform(alfaRad, k, cX, cY)
+        point = Point.random(args.width * 2, args.height * 2)
         min_distanse = args.delta*10
         for p in recognized:
             distanse = p.distanse(point)
@@ -93,9 +92,9 @@ def gen_recognized(args, transform_key, master):
 
 def gen_transform_key(args):
     alfaRad = random.random()*2*math.pi
-    k = (random.random()+0.5)
-    cX = (random.random()-0.5) * args.width
-    cY = (random.random()-0.5) * args.height
+    k = (random.random()*0.5+0.25)
+    cX = (random.random()*2-1) * args.width
+    cY = (random.random()*2-1) * args.height
     return (alfaRad, k, cX, cY)
 
 def main(args):
