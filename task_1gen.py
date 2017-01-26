@@ -5,8 +5,8 @@ import random
 import math
 import copy
 
-DEFAULT_WIDTH = 1024
-DEFAULT_HEIGHT = 768
+DEFAULT_WIDTH = 512
+DEFAULT_HEIGHT = 512
 DEFAULT_SEED = 1
 DEFAULT_OUTPUT = 'all'
 DEFAULT_DELTA = 1
@@ -19,10 +19,11 @@ class Point(object):
         self.y = y
 
     def transform(self, alfaRad, k, cX, cY):
-        self.x = int((self.x * math.cos(alfaRad) -
+        x_new = int((self.x * math.cos(alfaRad) -
                     self.y * math.sin(alfaRad)) * k + cX )
         self.y = int((self.x * math.sin(alfaRad) +
                     self.y * math.cos(alfaRad)) * k + cY )
+        self.x = x_new
 
     def clone(self):
         return Point(self.x, self.y)
@@ -34,7 +35,6 @@ class Point(object):
         dx = self.x - P.x if self.x > P.x else P.x - self.x
         dy = self.y - P.y if self.y > P.y else P.y - self.y
         return int(math.sqrt(dx**2 + dy**2))
-
 
     @staticmethod
     def random(width, height):
