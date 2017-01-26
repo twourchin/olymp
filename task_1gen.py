@@ -98,7 +98,41 @@ def gen_transform_key(args):
     cY = (random.random()-0.5) * args.height
     return (alfaRad, k, cX, cY)
 
-def main():
+def main(args):
+#init
+    init(args)
+
+#generate master
+    master = gen_master(args)
+
+#randomize master
+    master_randomized = randomize_master(args, master)
+
+#generate transformation keys
+    transform_key = gen_transform_key(args)
+
+#transform master
+    master_transformed = transform_master(args, transform_key, master_randomized)
+
+#generate recognized
+    recognized = gen_recognized(args, transform_key, master_transformed)
+
+#output
+    if args.output == 'all':
+        print(len(master))
+        output(master)
+        print(len(recognized))
+        output(recognized)
+    elif args.output == 'master':
+        output(master)
+    elif args.output == 'recognized':
+        output(recognized)
+    elif args.output == 'recognized-pattern':
+        output(master_transformed)
+    elif args.output == 'none':
+        pass
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--width', type=int,
                         nargs='?',
@@ -134,39 +168,4 @@ def main():
                         help='output type (%s)' % DEFAULT_OUTPUT)
 #parse arguments
     args = parser.parse_args()
-
-#init
-    init(args)
-
-#generate master
-    master = gen_master(args)
-
-#randomize master
-    master_randomized = randomize_master(args, master)
-
-#generate transformation keys
-    transform_key = gen_transform_key(args)
-
-#transform master
-    master_transformed = transform_master(args, transform_key, master_randomized)
-
-#generate recognized
-    recognized = gen_recognized(args, transform_key, master_transformed)
-
-#output
-    if args.output == 'all':
-        print(len(master))
-        output(master)
-        print(len(recognized))
-        output(recognized)
-    elif args.output == 'master':
-        output(master)
-    elif args.output == 'recognized':
-        output(recognized)
-    elif args.output == 'recognized-pattern':
-        output(master_transformed)
-    elif args.output == 'none':
-        pass
-
-if __name__ == "__main__":
-    main()
+    main(args)
